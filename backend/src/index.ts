@@ -7,6 +7,7 @@ import countEntrada from './components/countEntrada';
 import deletePessoa from './components/deletePessoa';
 import getHistorico from './components/getHistorico';
 import getFila from './components/getFila';
+import incrementPaes from './components/incrementPaes';
 
 configDotenv()
 
@@ -15,19 +16,31 @@ app.use(express.json());
 const port = 3000
 const router = express.Router();
 
-
+/* CRIAR PESSOA */
 app.post('/create', addPessoa.pessoa);
 
+
+/* RETORNAR QUANT: PESSOAS, PAES, ENTRADA */
 app.get('/totalpaes' , countPaes.somarQuantidadePaes);
 
 app.get('/totalpessoas' , countPessoa.contabilizarPessoas);
 
 app.get('/totalentrada' , countEntrada.entrada);
 
-app.delete('/delete', deletePessoa.delete);
 
+/* DELETAR PESSOA DA FILA E COLOCÁ-LA NO HISTORICO*/
+app.delete('/delete/:id', deletePessoa.deleteUser);
+
+
+/* ADICIONAR PAES*/
+app.put('/addpao/:id', incrementPaes.incrementarPaes);
+
+
+/* RETORNAR HISTÓRICO E FILA*/
 router.get('/historico', getHistorico.getHistorico);
 router.get('/fila', getFila.getFila);
+app.use('/', router);
+
 
 app.listen(port, () => {
     console.log(`Server ir running ${port}`)
