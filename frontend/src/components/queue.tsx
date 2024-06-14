@@ -46,6 +46,7 @@ export default function Queue() {
       try {
         await axios.delete(`http://localhost:3001/delete/${id}`);
         setFila(fila.filter(pessoa => pessoa.id !== id));
+        window.location.reload();
       } catch (error) {
         console.error('Erro ao remover cliente: ', error);
       }

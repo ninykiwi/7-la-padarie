@@ -19,6 +19,7 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
         try {
           await axios.post('http://localhost:3001/create', { nome, paes });
           onClose();
+          window.location.reload();
         } catch (error) {
             console.error('Erro ao adicionar pessoa: ', error);
         }

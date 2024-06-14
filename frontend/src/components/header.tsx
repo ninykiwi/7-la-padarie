@@ -1,9 +1,34 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import "../styles/header.css"
 
-export default async function Header() {
+export default function Header() {
+    const [totalPessoas, setTotalPessoas] = useState<number | null>(null);
+    const [totalPaes, setTotalPaes] = useState<number | null>(null);
+    const [totalEntrada, setTotalEntrada] = useState<number | null>(null);
+
+    const fetchDados = async () => {
+        try {
+            const responsePessoas = await axios.get('http://localhost:3001/totalpessoas');
+            setTotalPessoas(responsePessoas.data.totalPessoas);
+            
+            const responsePaes = await axios.get('http://localhost:3001/totalpaes');
+            setTotalPaes(responsePaes.data.somaQuantidadePaes._sum.paes);
+
+            const responseEntrada = await axios.get('http://localhost:3001/totalentrada');
+            setTotalEntrada(responseEntrada.data.entrada._sum.valor);
+        } catch (error) {
+            console.error('Erro ao buscar dados: ', error);
+        }
+    };
+    
+    useEffect(() => {
+        fetchDados();
+    }, []);
+
     return (
     <div className="header">
         <div className="HeaderBg">
@@ -32,7 +57,7 @@ export default async function Header() {
                 </div>
 
                 <div className="Total">
-                    <p>7</p>
+                    <p>{totalPessoas !== null ? totalPessoas : 'Carregando...'}</p>
                 </div>
             </div>
 
@@ -49,7 +74,7 @@ export default async function Header() {
                 </div>
 
                 <div className="Total">
-                    <p>350</p>
+                    <p>{totalPaes !== null ? totalPaes : 'Carregando...'}</p>
                 </div>
             </div>
 
@@ -66,7 +91,7 @@ export default async function Header() {
                 </div>
 
                 <div className="Total AmountTotal">
-                    <p>R$ 175,00</p>
+                    <p>{totalEntrada !== null ? `R$ ${totalEntrada.toFixed(2)}` : 'Carregando...'}</p>
                 </div>
             </div>
         </div>
