@@ -1,4 +1,6 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 import { configDotenv } from "dotenv"
 import addPessoa from './components/addPessoa';
 import countPaes from './components/countPaes';
@@ -11,10 +13,15 @@ import incrementPaes from './components/incrementPaes';
 
 configDotenv()
 
-const app = express()
+const app = express();
 app.use(express.json());
-const port = 3000
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+const port = 3001
 const router = express.Router();
+
+app.use(cors());
+
 
 /* CRIAR PESSOA */
 app.post('/create', addPessoa.pessoa);
@@ -43,6 +50,6 @@ app.use('/', router);
 
 
 app.listen(port, () => {
-    console.log(`Server ir running ${port}`)
+    console.log(`Server is running ${port}`)
   })
   
