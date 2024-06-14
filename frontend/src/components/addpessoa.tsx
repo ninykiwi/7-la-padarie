@@ -1,14 +1,14 @@
 // Modal.tsx
 import React, { useState } from 'react';
-import '../styles/modal.css';
+import '../styles/addpessoa.css';
 import axios from "axios";
 
-interface ModalProps {
+interface AddPessoaProps {
     isVisible: boolean;
     onClose: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
+const AddPessoa: React.FC<AddPessoaProps> = ({ isVisible, onClose }) => {
     if (!isVisible) return null;
 
     const [nome, setNome] = useState('');
@@ -60,4 +60,4 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
     );
 };
 
-export default Modal;
+export default AddPessoa;

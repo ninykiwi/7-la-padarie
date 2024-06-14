@@ -4,8 +4,8 @@ import React, { useEffect,useState } from 'react';
 import Image from "next/image";
 import axios from 'axios';
 import "../styles/queue.css";
-import "../styles/modal.css";
-import Modal from './modal';
+import AddPessoa from './addpessoa';
+import EditPessoa from './editpessoa';
 
 interface Fila {
   id: number;
@@ -17,17 +17,28 @@ interface Fila {
 
 export default function Queue() { 
     const [isModalVisible, setIsModalVisible] = useState(false);
-
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [selectedCliente, setSelectedCliente] = useState<Fila | null>(null);
     const [fila, setFila] = useState<Fila[]>([]);
 
     const handleAddPessoaClick = () => {
         setIsModalVisible(true);
     };
 
+    const handleEditPessoaClick = (cliente: Fila) => {
+      setSelectedCliente(cliente);
+      setIsEditModalVisible(true);
+  };
+
     const closeModal = () => {
       setIsModalVisible(false);
       fetchFila();
     }
+
+    const closeEditModal = () => {
+      setIsEditModalVisible(false);
+      fetchFila();
+  }
 
     const fetchFila = async () => {
       try {
@@ -54,9 +65,15 @@ export default function Queue() {
 
     return (
         <div className="Queue">
+          <div className='Edit'>
             <button className="AddPessoa Nome" onClick={handleAddPessoaClick}>+ Adicionar pessoa a fila</button>
-            
-            <Modal isVisible={isModalVisible} onClose={closeModal} />
+            <button className="Historico Nome">Histórico de pedidos</button>
+          </div>
+
+            <AddPessoa isVisible={isModalVisible} onClose={closeModal} />
+            {selectedCliente && (
+                <EditPessoa isVisible={isEditModalVisible} onClose={closeEditModal} cliente={selectedCliente} />
+            )}
 
             <div className="Clientes">
                 {fila.map((pessoa) => (
@@ -79,14 +96,25 @@ export default function Queue() {
                             </div>
                         </div>
 
-                        <Image className="Lixeira"
-                            src="/Lixeira.svg"
-                            alt="Lixeira Icon"
-                            width={24}
-                            height={25}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => handleRemoveCliente(pessoa.id)}
-                            />
+                        <div className="SVG">
+                          <Image className="Lapis"
+                              src="/Lapis.svg"
+                              alt="Lapis Icon"
+                              width={34}
+                              height={35}
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => handleEditPessoaClick(pessoa)}
+                              />
+
+                          <Image className="Lixeira"
+                              src="/Lixeira.svg"
+                              alt="Lixeira Icon"
+                              width={24}
+                              height={25}
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => handleRemoveCliente(pessoa.id)}
+                              />
+                        </div>
                     </div>
                 ))}
             </div>
