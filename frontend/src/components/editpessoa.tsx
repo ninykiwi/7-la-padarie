@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../styles/addpessoa.css';
 import axios from 'axios';
 
 interface Fila {
@@ -23,11 +22,12 @@ const EditPessoa: React.FC<EditPessoaProps> = ({ isVisible, onClose, cliente }) 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-          await axios.post('http://localhost:3001/addpao/${id}', { paes });
-          onClose();
-          window.location.reload();
+            const response = await axios.post(`http://localhost:3001/addpao/${cliente.id}`, { quant: paes });
+            console.log('Resposta do servidor:', response.data);
+            onClose(); // Fechar o modal
+            window.location.reload(); // Recarregar a página para atualizar os dados
         } catch (error) {
-            console.error('Erro ao editar pão: ', error);
+            console.error('Erro ao editar pão:', error);
         }
     };
 
@@ -35,23 +35,17 @@ const EditPessoa: React.FC<EditPessoaProps> = ({ isVisible, onClose, cliente }) 
         <div className="Modal">
             <form className="ModalContent" onSubmit={handleSubmit}>
                 <h2 className="Titulo">Editar pedido</h2>
-                
                 <div className="FormFields">
-                    <label>
-                        amg tenta fazer o nome da pessoa aparecer aqui...
-                        vou ajeitar o css daqui amanha prometo
-                    </label>
-                
+                    <label>Total de pães:</label>
                     <input 
                         type="number" 
                         id="paes" 
-                        placeholder="Total de pães:" 
-                        name="paes"
+                        placeholder="Total de pães" 
                         value={paes}
                         onChange={(e) => setPaes(parseInt(e.target.value))}
-                        required />
+                        required 
+                    />
                 </div>
-
                 <div className='Botoes'>
                     <button type="submit" className="Botao Enviar">Enviar</button>
                     <button className="Botao Cancelar" onClick={onClose}>Cancelar</button>

@@ -40,7 +40,7 @@ app.delete('/delete/:id', deletePessoa.deleteUser);
 
 
 /* ADICIONAR PAES*/
-app.put('/addpao/:id', incrementPaes.incrementarPaes);
+app.post('/addpao/:id', incrementPaes.incrementarPaes);
 
 
 /* RETORNAR HISTÓRICO E FILA*/
