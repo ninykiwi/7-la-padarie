@@ -36,7 +36,7 @@ const EditPessoa: React.FC<EditPessoaProps> = ({ isVisible, onClose, cliente }) 
             <form className="ModalContent" onSubmit={handleSubmit}>
                 <h2 className="Titulo">Editar pedido</h2>
                 <div className="FormFields">
-                    <label>Total de pães:</label>
+                    <label>Insira quantos pães deseja acrescentar:</label>
                     <input 
                         type="number" 
                         id="paes" 

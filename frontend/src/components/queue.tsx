@@ -6,6 +6,7 @@ import axios from 'axios';
 import "../styles/queue.css";
 import AddPessoa from './addpessoa';
 import EditPessoa from './editpessoa';
+import Historico from './historico';
 
 interface Fila {
   id: number;
@@ -18,6 +19,7 @@ interface Fila {
 export default function Queue() { 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [isHistoricoModalVisible, setIsHistoricoModalVisible] = useState(false);
     const [selectedCliente, setSelectedCliente] = useState<Fila | null>(null);
     const [fila, setFila] = useState<Fila[]>([]);
 
@@ -28,17 +30,25 @@ export default function Queue() {
     const handleEditPessoaClick = (cliente: Fila) => {
       setSelectedCliente(cliente);
       setIsEditModalVisible(true);
-  };
+    };
+
+    const handleHistoricoClick = () => {
+      setIsHistoricoModalVisible(true);
+    };
 
     const closeModal = () => {
       setIsModalVisible(false);
       fetchFila();
-    }
+    };
 
     const closeEditModal = () => {
       setIsEditModalVisible(false);
       fetchFila();
-  }
+    };
+
+    const closeHistoricoModal = () => {
+      setIsHistoricoModalVisible(false);
+    };
 
     const fetchFila = async () => {
       try {
@@ -67,13 +77,14 @@ export default function Queue() {
         <div className="Queue">
           <div className='Edit'>
             <button className="AddPessoa Nome" onClick={handleAddPessoaClick}>+ Adicionar pessoa a fila</button>
-            <button className="Historico Nome">Histórico de pedidos</button>
+            <button className="Historico Nome" onClick={handleHistoricoClick}>Histórico de pedidos</button>
           </div>
 
             <AddPessoa isVisible={isModalVisible} onClose={closeModal} />
             {selectedCliente && (
                 <EditPessoa isVisible={isEditModalVisible} onClose={closeEditModal} cliente={selectedCliente} />
             )}
+            <Historico isVisible={isHistoricoModalVisible} onClose={closeHistoricoModal} />
 
             <div className="Clientes">
                 {fila.map((pessoa) => (
