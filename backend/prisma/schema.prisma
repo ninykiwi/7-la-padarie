@@ -16,7 +16,6 @@ model Fila {
   nome  String
   paes  Int
   valor Float
-  isActive Boolean @default(true)
 }
 
 model Historico {

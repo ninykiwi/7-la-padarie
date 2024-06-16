@@ -23,7 +23,6 @@ export default {
             nome,
             paes,
             valor,
-            isActive: true,
         }
       });
 
